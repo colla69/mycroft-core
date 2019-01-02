@@ -234,6 +234,7 @@ class GUIConnection():
         # [...]
         # ]
         self.loaded = []  # list of lists in order.
+        self.explicit_move = False # Set to true to send reorder commands
 
         # Each connection will run its own Tornado server.  If the
         # connection drops, the server is killed.
@@ -349,9 +350,13 @@ class GUIConnection():
                 to_pos: Position to move to
         """
         DEBUG("Activating existing namespace")
-        self.socket.send({"type": "mycroft.session.list.move",
-                          "namespace": "mycroft.system.active_skills",
-                          "from": from_pos, "to": to_pos})
+        # Seems like the namespace is moved to the top automatically when
+        # a page change is done. Deactivating this for now.
+        if self.explicit_move:
+            DEBUG("move {} to {}".format(from_pos, to_pos))
+            self.socket.send({"type": "mycroft.session.list.move",
+                              "namespace": "mycroft.system.active_skills",
+                              "from": from_pos, "to": to_pos})
         # Move the local representation of the skill from current
         # position to position 0.
         self.loaded.insert(to_pos, self.loaded.pop(from_pos))
@@ -369,7 +374,7 @@ class GUIConnection():
             DEBUG(e)
             num = 0
 
-        DEBUG("Switching to already loaded page at index {}".format(num))
+        DEBUG("Switching to already loaded page at index {} in namespace {}".format(num, namespace))
         self.socket.send({"type": "mycroft.events.triggered",
                           "namespace": namespace,
                           "event_name": "page_gained_focus",
