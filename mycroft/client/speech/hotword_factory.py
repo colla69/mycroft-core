@@ -308,6 +308,11 @@ class HotWordFactory(object):
         config = config[hotword]
 
         module = config.get("module", "precise")
+        LOG.info("")
+        LOG.info(config)
+        LOG.info("")
+        LOG.info(module)
+        LOG.info("")
         return cls.load_module(module, hotword, config, lang, loop) or \
             cls.load_module('pocketsphinx', hotword, config, lang, loop) or \
             cls.CLASSES['pocketsphinx']()

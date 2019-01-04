@@ -130,7 +130,17 @@ class AudioConsumer(Thread):
             'utterance': self.wakeword_recognizer.key_phrase,
             'session': SessionManager.get().session_id,
         }
+
         self.emitter.emit("recognizer_loop:wakeword", payload)
+
+        payload = {
+            'utterance': "computer",
+            'session': SessionManager.get().session_id,
+        }
+        self.emitter.emit("recognizer_loop:wakeword", payload)
+
+        LOG.info("ciao")
+        LOG.info(self.wakeword_recognizer.key_phrase)
 
         if self._audio_length(audio) < self.MIN_AUDIO_SIZE:
             LOG.warning("Audio too short to be processed")
@@ -320,7 +330,7 @@ class RecognizerLoop(EventEmitter):
             return True  # consider 'no mic' muted
 
     def sleep(self):
-        self.state.sleeping = True
+        self.state.sleeping = TWrue
 
     def awaken(self):
         self.state.sleeping = False
