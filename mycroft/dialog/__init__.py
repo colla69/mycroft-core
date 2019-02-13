@@ -27,7 +27,7 @@ __doc__ = """
 """
 
 
-class MustacheDialogRenderer(object):
+class MustacheDialogRenderer:
     """
     A dialog template renderer based on the mustache templating language.
     """
@@ -43,7 +43,7 @@ class MustacheDialogRenderer(object):
             template_name (str): a unique identifier for a group of templates
             filename (str): a fully qualified filename of a mustache template.
         """
-        with open(filename, 'r') as f:
+        with open(filename, 'r', encoding='utf8') as f:
             for line in f:
                 template_text = line.strip()
                 # Skip all lines starting with '#' and all empty lines
@@ -93,7 +93,7 @@ class MustacheDialogRenderer(object):
         return line
 
 
-class DialogLoader(object):
+class DialogLoader:
     """
     Loads a collection of dialog files into a renderer implementation.
     """
@@ -113,7 +113,7 @@ class DialogLoader(object):
         """
         directory = Path(dialog_dir)
         if not directory.exists() or not directory.is_dir():
-            LOG.warning("No dialog files found: " + dialog_dir)
+            LOG.warning("No dialog files found: {}".format(dialog_dir))
             return self.__renderer
 
         for path, _, files in os.walk(str(directory)):
@@ -147,7 +147,7 @@ def get(phrase, lang=None, context=None):
     filename = "text/" + lang.lower() + "/" + phrase + ".dialog"
     template = resolve_resource_file(filename)
     if not template:
-        LOG.debug("Resource file not found: " + filename)
+        LOG.debug("Resource file not found: {}".format(filename))
         return phrase
 
     stache = MustacheDialogRenderer()

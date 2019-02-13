@@ -43,7 +43,7 @@ from mycroft.util import (
 from mycroft.util.log import LOG
 
 
-class MutableStream(object):
+class MutableStream:
     def __init__(self, wrapped_stream, format, muted=False):
         assert wrapped_stream is not None
         self.wrapped_stream = wrapped_stream
@@ -188,7 +188,12 @@ class ResponsiveRecognizer(speech_recognition.Recognizer):
         self.energy_ratio = listener_config.get('energy_ratio')
         # check the config for the flag to save wake words.
 
-        self.save_utterances = listener_config.get('record_utterances', False)
+        if 'record_utterances' in listener_config:
+            # TODO: 19.08 remove this backwards compatibility
+            self.save_utterances = listener_config.get('record_utterances')
+        else:
+            self.save_utterances = listener_config.get('save_utterances',
+                                                       False)
         self.upload_lock = Lock()
         self.filenames_to_upload = []
         self.mic_level_file = os.path.join(get_ipc_directory(), "mic_level")
