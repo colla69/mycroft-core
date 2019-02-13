@@ -206,8 +206,7 @@ class Configuration(object):
         """
         if not configs:
             configs = [LocalConf(DEFAULT_CONFIG), RemoteConf(),
-                       LocalConf(SYSTEM_CONFIG), LocalConf(USER_CONFIG),
-                       Configuration.__patch]
+                       LocalConf(SYSTEM_CONFIG), LocalConf(USER_CONFIG)]
         else:
             # Handle strings in stack
             for index, item in enumerate(configs):

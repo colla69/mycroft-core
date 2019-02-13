@@ -116,6 +116,7 @@ def handle_audio_start(event):
     """
         Mute recognizer loop
     """
+    LOG.info("myconf"+config.get("listener").get("mute_during_output"))
     if config.get("listener").get("mute_during_output"):
         loop.mute()
 
@@ -125,6 +126,7 @@ def handle_audio_end(event):
         Request unmute, if more sources have requested the mic to be muted
         it will remain muted.
     """
+    LOG.info("myconf"+config.get("listener").get("mute_during_output"))
     if config.get("listener").get("mute_during_output"):
         loop.unmute()  # restore
 
@@ -133,6 +135,7 @@ def handle_stop(event):
     """
         Handler for mycroft.stop, i.e. button press
     """
+    LOG.info("myconf"+config.get("listener").get("mute_during_output"))
     loop.force_unmute()
 
 

@@ -489,11 +489,17 @@ class ResponsiveRecognizer(speech_recognition.Recognizer):
         if self._stop_signaled:
             return
 
-        LOG.debug("Recording...")
+        LOG.info("Recording...")
         emitter.emit("recognizer_loop:record_begin")
 
         # If enabled, play a wave file with a short sound to audibly
         # indicate recording has begun.
+        # LOG.info("kacka")
+        # LOG.info(self.config.get('opt_in'))
+        # LOG.info("kacka")
+        # LOG.info(self.config.get('confirm_listening'))
+        # LOG.info("kacka")
+
         if self.config.get('confirm_listening'):
             file = resolve_resource_file(
                 self.config.get('sounds').get('start_listening'))
